@@ -13,7 +13,7 @@ set_target_properties(${PROJECT_NAME}_STATIC PROPERTIES
 )
 target_include_directories(${PROJECT_NAME}_STATIC PUBLIC src/interface)
 target_include_directories(${PROJECT_NAME}_STATIC PRIVATE deps/codec/include)
-# target_link_libraries(${PROJECT_NAME}_STATIC PRIVATE CODEC_LIB)
+target_link_libraries(${PROJECT_NAME}_STATIC PRIVATE CODEC_LIB)
 
 # shared lib
 add_library(${PROJECT_NAME}_SHARED SHARED ${SOURCES})
@@ -22,7 +22,7 @@ set_target_properties(${PROJECT_NAME}_SHARED PROPERTIES
 )
 target_include_directories(${PROJECT_NAME}_SHARED PUBLIC src/interface)
 target_include_directories(${PROJECT_NAME}_SHARED PRIVATE deps/codec/include)
-# target_link_libraries(${PROJECT_NAME}_STATIC PRIVATE CODEC_LIB)
+target_link_libraries(${PROJECT_NAME}_STATIC PRIVATE CODEC_LIB)
 
 install(TARGETS ${PROJECT_NAME}_STATIC ${PROJECT_NAME}_SHARED
 	LIBRARY DESTINATION lib
