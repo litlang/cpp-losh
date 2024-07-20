@@ -12,7 +12,15 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
 
+    - name: checkout dependencies
+      id: codec
+      uses: actions/cache@v3
+      with: 
+        key: codec-linux-x86-64
+        path: deps/codec
+        
     - name: download dependencies
+      if: steps.codec.outputs.cache-hit != 'true'
       run: >
         mkdir deps;
         cd deps;
