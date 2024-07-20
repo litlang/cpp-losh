@@ -38,3 +38,102 @@ jobs:
       with:
         name: losh-linux-x86-64-release
         path: dist/*
+
+  windows-x86-64:
+    runs-on: windows-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: checkout dependencies
+      id: codec
+      uses: actions/cache@v3
+      with: 
+        key: codec-windows-x86-64
+        path: deps/codec
+        
+    - name: download dependencies
+      if: steps.codec.outputs.cache-hit != 'true'
+      run: >
+        mkdir deps;
+        cd deps;
+        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/windows-x86-64.zip -OutFile codec.zip;
+        Expand-Archive -Path codec.zip;
+        rm codec.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G "Unix Makefiles" .;
+        make install;
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: losh-windows-x86-64-release
+        path: dist/*
+
+  macos-x86-64:
+    runs-on: macos-13
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: checkout dependencies
+      id: codec
+      uses: actions/cache@v3
+      with: 
+        key: codec-macos-x86-64
+        path: deps/codec
+        
+    - name: download dependencies
+      if: steps.codec.outputs.cache-hit != 'true'
+      run: >
+        mkdir deps;
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/macos-x86-64.zip -o codec.zip;
+        unzip codec.zip -d codec;
+        rm codec.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
+        make install;
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: losh-macos-x86-64-release
+        path: dist/*
+
+  macos-arm-64:
+    runs-on: macos-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: checkout dependencies
+      id: codec
+      uses: actions/cache@v3
+      with: 
+        key: codec-macos-arm-64
+        path: deps/codec
+        
+    - name: download dependencies
+      if: steps.codec.outputs.cache-hit != 'true'
+      run: >
+        mkdir deps;
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/macos-arm-64.zip -o codec.zip;
+        unzip codec.zip -d codec;
+        rm codec.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
+        make install;
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: losh-macos-arm-64-release
+        path: dist/*
