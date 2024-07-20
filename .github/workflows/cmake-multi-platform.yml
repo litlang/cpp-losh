@@ -1,0 +1,32 @@
+name: CMake on multiple platforms
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linux-x86-64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: download dependencies
+      run: >
+        mkdir deps;
+        cd deps;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/linux-x86-64.zip -o codec.zip;
+        unzip codec.zip -d codec;
+        rm codec.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
+        make install;
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: losh-linux-x86-64-release
+        path: dist/*
