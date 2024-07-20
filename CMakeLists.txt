@@ -6,6 +6,7 @@ project(losh)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".so" ".lib" ".dll" ".dylib")
 find_library(CODEC_LIB NAMES codec PATHS deps/codec/lib NO_DEFAULT_PATH REQUIRED)
 
 # static lib
