@@ -8,7 +8,7 @@ project(losh)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-find_library(CODEC_LIB NAMES codec PATHS deps/codec/lib NO_DEFAULT_PATH REQUIRED)
+# find_library(CODEC_LIB NAMES codec PATHS deps/codec/lib NO_DEFAULT_PATH REQUIRED)
 
 # static lib
 add_library(${PROJECT_NAME}_STATIC STATIC ${SOURCES})
