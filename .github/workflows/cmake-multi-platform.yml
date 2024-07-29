@@ -13,14 +13,14 @@ jobs:
       uses: actions/checkout@v3
 
     - name: checkout dependencies
-      id: codec
+      id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-linux-x86-64
         path: deps/codec
         
     - name: download dependencies
-      if: steps.codec.outputs.cache-hit != 'true'
+      if: steps.cache-codec.outputs.cache-hit != 'true'
       run: >
         mkdir deps;
         cd deps;
@@ -46,14 +46,14 @@ jobs:
       uses: actions/checkout@v3
 
     - name: checkout dependencies
-      id: codec
+      id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-windows-x86-64
         path: deps/codec
         
     - name: download dependencies
-      if: steps.codec.outputs.cache-hit != 'true'
+      if: steps.cache-codec.outputs.cache-hit != 'true'
       run: >
         mkdir deps;
         cd deps;
@@ -79,14 +79,14 @@ jobs:
       uses: actions/checkout@v3
 
     - name: checkout dependencies
-      id: codec
+      id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-macos-x86-64
         path: deps/codec
         
     - name: download dependencies
-      if: steps.codec.outputs.cache-hit != 'true'
+      if: steps.cache-codec.outputs.cache-hit != 'true'
       run: >
         mkdir deps;
         cd deps;
@@ -112,14 +112,14 @@ jobs:
       uses: actions/checkout@v3
 
     - name: checkout dependencies
-      id: codec
+      id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-macos-arm-64
         path: deps/codec
         
     - name: download dependencies
-      if: steps.codec.outputs.cache-hit != 'true'
+      if: steps.cache-codec.outputs.cache-hit != 'true'
       run: >
         mkdir deps;
         cd deps;
@@ -136,4 +136,44 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: losh-macos-arm-64-release
+        path: dist/*
+
+  android-arm-64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      
+    - name: setup android sdk
+      uses: nttld/setup-ndk@v1
+      id: setup-ndk
+      with:
+        ndk-version: r26d
+        add-to-path: false
+
+    - name: checkout dependencies
+      id: cache-codec
+      uses: actions/cache@v3
+      with: 
+        key: codec-include
+        path: deps/codec/include
+
+    - name: download dependencies
+      if: steps.cache-codec.outputs.cache-hit != 'true'
+      run: >
+        mkdir -p deps/codec;
+        cd deps/codec;
+        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/include.zip -o include.zip;
+        unzip include.zip -d include;
+        rm include.zip;
+
+    - name: build
+      run: >
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_TOOLCHAIN_FILE=cmake/android-arm-64.cmake -DANDROID_NDK_HOME=${{steps.setup-ndk.outputs.ndk-path}} .;
+        make install;
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: losh-android-arm-64-release
         path: dist/*
