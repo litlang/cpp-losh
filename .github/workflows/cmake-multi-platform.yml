@@ -14,7 +14,7 @@ jobs:
 
     - name: Checkout Dependencies
       id: cache-codec
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with: 
         key: codec-linux-x86-64
         path: deps/codec
@@ -47,7 +47,7 @@ jobs:
 
     - name: Checkout Dependencies
       id: cache-codec
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with: 
         key: codec-windows-x86-64
         path: deps/codec
@@ -80,7 +80,7 @@ jobs:
 
     - name: Checkout Dependencies
       id: cache-codec
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with: 
         key: codec-macos-x86-64
         path: deps/codec
@@ -113,7 +113,7 @@ jobs:
 
     - name: Checkout Dependencies
       id: cache-codec
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with: 
         key: codec-macos-arm-64
         path: deps/codec
@@ -153,7 +153,7 @@ jobs:
 
     - name: Checkout Dependencies
       id: cache-codec
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with: 
         key: codec-include
         path: deps/codec/include
