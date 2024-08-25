@@ -162,6 +162,7 @@ jobs:
       if: steps.cache-codec.outputs.cache-hit != 'true'
       run: |
         mkdir deps
+        cd deps
         curl https://raw.githubusercontent.com/litlang/cpplit-deps/main/codec/latest/include.zip -o codec.zip
         unzip codec.zip -d codec
         rm codec.zip
