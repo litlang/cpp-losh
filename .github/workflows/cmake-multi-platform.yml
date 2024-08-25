@@ -9,31 +9,31 @@ jobs:
   linux-x86-64:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: checkout dependencies
+    - name: Checkout Dependencies
       id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-linux-x86-64
         path: deps/codec
         
-    - name: download dependencies
+    - name: Download Dependencies
       if: steps.cache-codec.outputs.cache-hit != 'true'
-      run: >
-        mkdir deps;
-        cd deps;
-        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/linux-x86-64.zip -o codec.zip;
-        unzip codec.zip -d codec;
-        rm codec.zip;
+      run: |
+        mkdir deps
+        cd deps
+        curl https://raw.githubusercontent.com/litlang/cpplit-deps/main/codec/latest/include.zip -o codec.zip
+        unzip codec.zip -d codec
+        rm codec.zip
 
-    - name: build
-      run: >
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
-        make install;
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .
+        make install
 
-    - name: upload artifacts
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: losh-linux-x86-64-release
@@ -42,31 +42,31 @@ jobs:
   windows-x86-64:
     runs-on: windows-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: checkout dependencies
+    - name: Checkout Dependencies
       id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-windows-x86-64
         path: deps/codec
         
-    - name: download dependencies
+    - name: Download Dependencies
       if: steps.cache-codec.outputs.cache-hit != 'true'
-      run: >
-        mkdir deps;
-        cd deps;
-        Invoke-WebRequest -Uri https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/windows-x86-64.zip -OutFile codec.zip;
-        Expand-Archive -Path codec.zip;
-        rm codec.zip;
+      run: |
+        mkdir deps
+        cd deps
+        Invoke-WebRequest -Uri https://raw.githubusercontent.com/litlang/cpplit-deps/main/codec/latest/include.zip -OutFile codec.zip
+        Expand-Archive -Path codec.zip
+        rm codec.zip
 
-    - name: build
-      run: >
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G "Unix Makefiles" .;
-        make install;
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G "Unix Makefiles" .
+        make install
 
-    - name: upload artifacts
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: losh-windows-x86-64-release
@@ -75,31 +75,31 @@ jobs:
   macos-x86-64:
     runs-on: macos-13
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: checkout dependencies
+    - name: Checkout Dependencies
       id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-macos-x86-64
         path: deps/codec
         
-    - name: download dependencies
+    - name: Download Dependencies
       if: steps.cache-codec.outputs.cache-hit != 'true'
-      run: >
-        mkdir deps;
-        cd deps;
-        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/macos-x86-64.zip -o codec.zip;
-        unzip codec.zip -d codec;
-        rm codec.zip;
+      run: |
+        mkdir deps
+        cd deps
+        curl https://raw.githubusercontent.com/litlang/cpplit-deps/main/codec/latest/include.zip -o codec.zip
+        unzip codec.zip -d codec
+        rm codec.zip
 
-    - name: build
-      run: >
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
-        make install;
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .
+        make install
 
-    - name: upload artifacts
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: losh-macos-x86-64-release
@@ -108,31 +108,31 @@ jobs:
   macos-arm-64:
     runs-on: macos-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: checkout dependencies
+    - name: Checkout Dependencies
       id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-macos-arm-64
         path: deps/codec
         
-    - name: download dependencies
+    - name: Download Dependencies
       if: steps.cache-codec.outputs.cache-hit != 'true'
-      run: >
-        mkdir deps;
-        cd deps;
-        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/macos-arm-64.zip -o codec.zip;
-        unzip codec.zip -d codec;
-        rm codec.zip;
+      run: |
+        mkdir deps
+        cd deps
+        curl https://raw.githubusercontent.com/litlang/cpplit-deps/main/codec/latest/include.zip -o codec.zip
+        unzip codec.zip -d codec
+        rm codec.zip
 
-    - name: build
-      run: >
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .;
-        make install;
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist .
+        make install
 
-    - name: upload artifacts
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: losh-macos-arm-64-release
@@ -141,8 +141,8 @@ jobs:
   android-arm-64:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
       
     - name: setup android sdk
       uses: nttld/setup-ndk@v1
@@ -151,26 +151,25 @@ jobs:
         ndk-version: r26d
         add-to-path: false
 
-    - name: checkout dependencies
+    - name: Checkout Dependencies
       id: cache-codec
       uses: actions/cache@v3
       with: 
         key: codec-include
         path: deps/codec/include
 
-    - name: download dependencies
+    - name: Download Dependencies
       if: steps.cache-codec.outputs.cache-hit != 'true'
-      run: >
-        mkdir -p deps/codec;
-        cd deps/codec;
-        curl https://cdn.jsdelivr.net/gh/litlang/cpplit-deps/codec/include.zip -o include.zip;
-        unzip include.zip -d include;
-        rm include.zip;
+      run: |
+        mkdir deps
+        curl https://raw.githubusercontent.com/litlang/cpplit-deps/main/codec/latest/include.zip -o codec.zip
+        unzip codec.zip -d codec
+        rm codec.zip
 
-    - name: build
-      run: >
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_TOOLCHAIN_FILE=cmake/android-arm-64.cmake -DANDROID_NDK_HOME=${{steps.setup-ndk.outputs.ndk-path}} .;
-        make install;
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_TOOLCHAIN_FILE=cmake/android-arm-64.cmake -DANDROID_NDK_HOME=${{steps.setup-ndk.outputs.ndk-path}} .
+        make install
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
